@@ -23,8 +23,7 @@ class Player(commands.Cog):
         uuid = await requests.get_uuid(username)
         embed = discord.Embed(
             title="UUID",
-            description=f"{uuid}",
-            colour=discord.Color.green()
+            description=f"{uuid}"
         )
         await ctx.send(embed=embed)
 
@@ -34,10 +33,11 @@ class Player(commands.Cog):
         uuid = await requests.get_uuid(username)
         history = await requests.get_history(uuid)
         embed = discord.Embed(
-            title="Player Name History",
-            colour=discord.Color.green()
+            title="Player Name History"
         )
-        embed.add_field(name=history[0]["name"],value="test")
+        embed.add_field(name=history[0]["name"],value="Initial Name")
+        for i in range(len(history) - 1):
+            embed.add_field(name=history[i + 1]["name"],value=date.fromtimestamp(history[i + 1]["changedToAt"]/1000))
         await ctx.send(embed=embed)
 
 
