@@ -15,7 +15,8 @@ bot = commands.Bot(
     case_insensitive=True
 )
 
-bot.load_extension('bot.cogs.minecraft')
+bot.load_extension('bot.cogs.player')
+bot.load_extension('bot.cogs.server')
 
 if __name__ == "__main__":
     bot.run(os.environ.get("BOT_TOKEN"))
