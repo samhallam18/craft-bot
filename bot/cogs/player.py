@@ -22,8 +22,8 @@ class Player(commands.Cog):
         """Returns the UUID of a player"""
         uuid = await requests.get_uuid(username)
         embed = discord.Embed(
-            title="UUID",
-            description=f"{uuid}"
+            description="""**›› UUID**
+            {uuid}""".format(uuid=uuid)
         )
         await ctx.send(embed=embed)
 
@@ -32,12 +32,16 @@ class Player(commands.Cog):
         """Returns the name history of a player"""
         uuid = await requests.get_uuid(username)
         history = await requests.get_history(uuid)
+        history[0]["changedToAt"] = "Initial Name"
+        for i in range(1, len(history)):
+            history[i]["changedToAt"] = str(date.fromtimestamp(history[i]["changedToAt"]/1000))
+        desc = "**Player Name History**\n\n"
+        for i in range(len(history)):
+            desc += f"**›› {history[i]['name']}**\n{history[i]['changedToAt']}\n"
         embed = discord.Embed(
-            title="Player Name History"
+            description=desc
         )
-        embed.add_field(name=history[0]["name"],value="Initial Name")
-        for i in range(len(history) - 1):
-            embed.add_field(name=history[i + 1]["name"],value=date.fromtimestamp(history[i + 1]["changedToAt"]/1000))
+        embed.set_footer(text="Date Changed Format: yyyy-mm-dd")
         await ctx.send(embed=embed)
 
 
